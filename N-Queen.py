@@ -1,11 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import colors
 
 
 class Board:
     def __init__(self, n):
         self.size = n
         self.grid = np.zeros((n, n), dtype=int)
+
+        self.cmap = colors.ListedColormap(['red', 'blue'])
+        self.bounds = [0, 0.5, 1]
+        self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
 
     def reset(self):
         self.grid = np.zeros((n, n), dtype=int)
@@ -23,9 +28,10 @@ class Board:
                     mat = np.array(board.grid)
                     # print(mat)
                     plt.subplot(pltSize, pltSize, ctr)
-                    plt.xticks(range(9))
-                    plt.yticks(range(9))
-                    plt.imshow(mat)
+                    plt.xticks(np.arange(-0.5, self.size), range(0, self.size+1))
+                    plt.yticks(np.arange(-0.5, self.size), range(0, self.size+1))
+                    plt.imshow(mat, cmap=self.cmap, norm=self.norm)
+                    plt.grid(which='major', axis='both', linestyle='-', color='w', linewidth=2)
                     # print(ctr)
                     ctr += 1
                     explored.append(np.argmax(self.grid[0]))
